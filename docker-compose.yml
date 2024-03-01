@@ -33,6 +33,7 @@ services:
     depends_on:
       - service-registry
       - mysqldb
+      - zipkin-server
     environment:
       - MYSQL_HOST=mysqldb
       - MYSQL_USER=root

@@ -19,13 +19,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: health,info,prometheus
   endpoint:
     health:
       show-details: always
   zipkin:
     tracing:
-      endpoint: http://zipkin:9411
+      endpoint: http://zipkin-server:9411/api/v2/spans
 
 spring:
   application:

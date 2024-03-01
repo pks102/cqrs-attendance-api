@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8001
 
 logging:
   pattern:
@@ -33,14 +33,19 @@ spring:
           json:
             trusted:
               packages: '*'
-  zipkin:
-    baseUrl: http://zipkin:9411
+
 eureka:
   instance:
     prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
   endpoints:
     web:
       exposure:
@@ -49,7 +54,7 @@ eureka:
   endpoint:
     health:
       show-details: always
-management:
-  tracing:
-    sampling:
-      probability: 1.0
+      
+  zipkin:
+    tracing:
+      endpoint: http://zipkin-server:9411/api/v2/spans
