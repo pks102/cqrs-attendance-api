@@ -1,0 +1,24 @@
+scrape_configs:
+  - job_name: 'command-api'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['attendance-command-api:8000']
+        labels:
+          application: 'Attendance Command API'
+
+  - job_name: 'query-api'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['attendance-query-api:8001']
+        labels:
+          application: 'Attendance Query API'
+          
+  - job_name: 'api-gateway'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['api-gateway:8060']
+        labels:
+          application: 'api-gateway'

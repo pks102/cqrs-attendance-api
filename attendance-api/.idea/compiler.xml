@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cqrs.core" />
+        <module name="api-gateway" />
+        <module name="attendance.query" />
+        <module name="attendance.cmd" />
+        <module name="attendance.common" />
+        <module name="serviceregistry" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gateway" options="-parameters" />
+      <module name="attendance.cmd" options="-parameters" />
+      <module name="attendance.common" options="-parameters" />
+      <module name="attendance.query" options="-parameters" />
+      <module name="cqrs.core" options="-parameters" />
+      <module name="serviceregistry" options="-parameters" />
+    </option>
+  </component>
+</project>

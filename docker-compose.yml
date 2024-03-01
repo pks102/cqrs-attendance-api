@@ -1,0 +1,149 @@
+version: "3.4"
+
+services:
+  attendance-command-api:
+    image: pks102/assignment-attendance.cmd:1.0.0
+    mem_limit: 1g
+    networks:
+      - assignment-network
+    ports:
+      - "8000:8000"
+    depends_on:
+      - service-registry
+      - zipkin-server
+    environment:
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://service-registry:8761/eureka
+
+
+  service-registry:
+    image: pks102/assignment-serviceregistry:0.0.1-SNAPSHOT
+    networks:
+      - assignment-network
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+
+  attendance-query-api:
+    image: pks102/assignment-attendance.query:1.0.0
+    mem_limit: 1g
+    networks:
+      - assignment-network
+    ports:
+      - "8001:8001"
+    depends_on:
+      - service-registry
+      - mysqldb
+    environment:
+      - MYSQL_HOST=mysqldb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://service-registry:8761/eureka
+
+  api-gateway:
+    image: pks102/assignment-api-gateway:0.0.1-SNAPSHOT
+    mem_limit: 1g
+    networks:
+      - assignment-network
+    ports:
+      - "8060:8060"
+    depends_on:
+      - service-registry
+      - zipkin-server
+    environment:
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://service-registry:8761/eureka
+  
+
+  
+  zookeeper:
+    image: bitnami/zookeeper
+    restart: always
+    networks:
+      - assignment-network
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka
+    networks:
+      - assignment-network
+    ports:
+      - "9092:9092"
+    restart: always
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    container_name: zipkin
+    mem_limit: 300m
+    networks:
+      - assignment-network
+    ports:
+      - "9411:9411"
+    restart: always #Restart if there is a problem starting up
+
+  mysqldb:
+    container_name: mysqldb
+    image: "mysql"
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - assignment-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=attendance
+
+  mongo:
+    image: mongo
+    container_name: mongodbhost
+    restart: always
+    networks:
+      - assignment-network
+    ports:
+      - "27017:27017"
+
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    container_name: prometheus
+    networks:
+      - assignment-network
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - attendance-command-api
+      - api-gateway
+      - attendance-query-api
+
+  grafana:
+    image: grafana/grafana:9.5.2
+    container_name: grafana
+    networks:
+      - assignment-network
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+   
+networks:
+  assignment-network:
