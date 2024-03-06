@@ -1,0 +1,15 @@
+In summary, the key non-functional requirements for an Employee Attendance Management System include:
+
+Performance: Fast response time and high throughput to handle user requests efficiently.
+Scalability: Ability to support a growing number of employees and locations without major changes.
+Availability: 24/7 accessibility to accommodate employees in different time zones and shifts.
+Reliability: High fault tolerance with minimal downtime and quick recovery from failures.
+Usability: Intuitive and easy-to-use interface with minimal training required.
+Security: Role-based access control, data security, and compliance with relevant laws.
+Maintainability: Modularity and comprehensive documentation for easy updates and support.
+Compliance: Adherence to legal and regulatory requirements, such as data protection laws.
+Backup and Recovery: Robust mechanisms to prevent data loss and ensure business continuity.
+Logging: Recording system events, transactions, and errors for debugging, auditing, and performance analysis.
+Monitoring: Continuous observation of system performance, availability, and health for proactive issue detection and resource optimization.
+
+
