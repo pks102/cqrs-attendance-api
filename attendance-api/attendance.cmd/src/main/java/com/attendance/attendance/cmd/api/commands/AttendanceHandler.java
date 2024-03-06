@@ -16,10 +16,6 @@ public class AttendanceHandler implements CommandHandler{
     private EventSourcingHandler<AttendanceAggregate> eventSourcingHandler;
     @Override
     public void handle(SwipeInCommand command) {
-
-        System.out.println("local data UTC swipe in date : "+ LocalDate.now(ZoneId.of("UTC")));
-        System.out.println("local date Asia swipe in date : "+ LocalDate.now(ZoneId.of("Asia/Kolkata")));
-        System.out.println("Zonedate UTC swipe in date : "+ ZonedDateTime.now(ZoneId.of("UTC")));
         AttendanceAggregate aggregate = eventSourcingHandler.getByEmpIdAndDate(command.getEmpId(), LocalDate.now());
         aggregate.swipeIn(command);
         eventSourcingHandler.saveAggregate(aggregate,false);

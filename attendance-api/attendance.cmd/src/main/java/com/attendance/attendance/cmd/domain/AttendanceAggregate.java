@@ -30,14 +30,6 @@ public class AttendanceAggregate extends AggregateRoot {
     private Long totalTimeInPremise = 0L;
     private AttendanceStatus attendanceStatus;
 
-//    public AttendanceAggregate(SwipeInCommand command) {
-//        raiseEvent(SwipeInEvent.builder()
-//                .id(command.getId())
-//                .empId(command.getEmpId())
-//                .swipeInTime(LocalTime.now())
-//                .date(LocalDate.now())
-//                .build());
-//    }
 
     public String getEmpId() {
         return empId;
@@ -117,5 +109,6 @@ public class AttendanceAggregate extends AggregateRoot {
         this.id = event.getId();
         this.empId = event.getEmpId();
         this.date = event.getDate();
+        this.attendanceStatus = event.getStatus();
     }
 }
