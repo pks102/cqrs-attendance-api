@@ -21,7 +21,7 @@ pipeline {
                         sh 'pwd'
 		        sh 'cp -r target/*.jar docker'
                     }
-                dir("../attendance.query") {
+                dir("attendance-api/attendance.query") {
                         sh 'pwd'
 		        sh 'cp -r target/*.jar docker'
                 }                
