@@ -28,27 +28,31 @@ pipeline {
            }
         }
 
-        stage('Build docker image') {
-           steps {
-               script {
-                   dir("attendance-api/attendance.cmd") {
-                        sh 'pwd'
-		        def cmdImage = docker.build('pks102/assignment/attendance.cmd', "./docker")
-                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                       		 cmdImage.push("${env.BUILD_NUMBER}")
-                	}   
-                    }
-           	 }
-               script {
-                   dir("attendance-api/attendance.query") {
-                        sh 'pwd'
-		        def queryImage = docker.build('pks102/assignment/attendance.query', "./docker")
-                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                       		 queryImage.push("${env.BUILD_NUMBER}")
-                	}   
-                    }
-           	 }
-            }
+	stage('Build docker image') {
+	    steps {
+	        script {
+	            dir("attendance-api/attendance.cmd") {
+	                sh 'pwd'
+	                def cmdImage = docker.build('pks102/assignment/attendance.cmd', "./docker")
+	                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+	                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+	                    cmdImage.push("${env.BUILD_NUMBER}")
+	                    sh "docker logout"
+	                }
+	            }
+	        }
+	        script {
+	            dir("attendance-api/attendance.query") {
+	                sh 'pwd'
+	                def queryImage = docker.build('pks102/assignment/attendance.query', "./docker")
+	                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+	                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+	                    queryImage.push("${env.BUILD_NUMBER}")
+	                    sh "docker logout"
+	                }
+	            }
+	        }
+	    }
 	}
     }
 }
