@@ -4,27 +4,40 @@ pipeline {
           maven 'maven 3.9.6'
           jdk 'jdk17'
     }
+    
     stages {
         stage('Build maven ') {
             steps {
-                    sh 'pwd'
-                    sh 'mvn clean install package'
+                dir("attendance-api") {
+                        sh 'pwd'
+                        sh "mvn clean install -DskipTests"
+                    }
             }
         }
 
         stage('Copy Artifact') {
            steps {
-                   sh 'pwd'
-		           sh 'cp -r target/*.jar docker'
+                dir("attendance.cmd") {
+                        sh 'pwd'
+		                sh 'cp -r target/*.jar docker'
+                    }
+                dir("../attendance.query") {
+                        sh 'pwd'
+		                sh 'cp -r target/*.jar docker'
+                }                
            }
         }
 
         stage('Build docker image') {
            steps {
                script {
-                 def customImage = docker.build('pks102/assignment', "./docker")
-                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                 customImage.push("${env.BUILD_NUMBER}")
+                   dir("../attendance.cmd") {
+                        sh 'pwd'
+		                def customImage = docker.build('pks102/assignment', "./docker")
+                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        customImage.push("${env.BUILD_NUMBER}")
+                } 
+                 
                  }
            }
         }
