@@ -17,13 +17,13 @@ pipeline {
 
         stage('Copy Artifact') {
            steps {
-                dir("attendance.cmd") {
+                dir("attendance-api/attendance.cmd") {
                         sh 'pwd'
-		                sh 'cp -r target/*.jar docker'
+		        sh 'cp -r target/*.jar docker'
                     }
                 dir("../attendance.query") {
                         sh 'pwd'
-		                sh 'cp -r target/*.jar docker'
+		        sh 'cp -r target/*.jar docker'
                 }                
            }
         }
@@ -31,9 +31,9 @@ pipeline {
         stage('Build docker image') {
            steps {
                script {
-                   dir("../attendance.cmd") {
+                   dir("attendance-api/attendance.cmd") {
                         sh 'pwd'
-		                def customImage = docker.build('pks102/assignment', "./docker")
+		        def customImage = docker.build('pks102/assignment', "./docker")
                         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         customImage.push("${env.BUILD_NUMBER}")
                 } 
