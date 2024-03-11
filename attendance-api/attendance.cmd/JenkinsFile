@@ -33,18 +33,18 @@ pipeline {
                script {
                    dir("attendance-api/attendance.cmd") {
                         sh 'pwd'
-		        def customImage = docker.build('pks102/assignment/attendance.cmd', "./docker")
+		        def cmdImage = docker.build('pks102/assignment/attendance.cmd', "./docker")
                         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                       		 customImage.push("${env.BUILD_NUMBER}")
+                       		 cmdImage.push("${env.BUILD_NUMBER}")
                 	}   
                     }
            	 }
                script {
                    dir("attendance-api/attendance.query") {
                         sh 'pwd'
-		        def customImage = docker.build('pks102/assignment/attendance.query', "./docker")
+		        def queryImage = docker.build('pks102/assignment/attendance.query', "./docker")
                         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                       		 customImage.push("${env.BUILD_NUMBER}")
+                       		 queryImage.push("${env.BUILD_NUMBER}")
                 	}   
                     }
            	 }
