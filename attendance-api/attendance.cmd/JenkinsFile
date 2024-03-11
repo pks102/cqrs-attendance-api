@@ -33,7 +33,7 @@ pipeline {
 	        script {
 	            dir("attendance-api/attendance.cmd") {
 	                sh 'pwd'
-	                def cmdImage = docker.build('pks102/assignment/attendance.cmd', "./docker")
+	                def cmdImage = docker.build('pks102/attendance.cmd', "./docker")
 	                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 	                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
 	                    cmdImage.push("${env.BUILD_NUMBER}")
@@ -44,7 +44,7 @@ pipeline {
 	        script {
 	            dir("attendance-api/attendance.query") {
 	                sh 'pwd'
-	                def queryImage = docker.build('pks102/assignment/attendance.query', "./docker")
+	                def queryImage = docker.build('pks102/attendance.query', "./docker")
 	                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
 	                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
 	                    queryImage.push("${env.BUILD_NUMBER}")
