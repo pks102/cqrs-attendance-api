@@ -2,11 +2,16 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/../api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../api-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/attendance.cmd/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/attendance.cmd/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/attendance.common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/attendance.common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/attendance.query/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/attendance.query/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../cqrs.core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../cqrs.core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../serviceregistry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../serviceregistry/src/main/resources" charset="UTF-8" />
   </component>
 </project>
